@@ -5,15 +5,17 @@
 >
 > This fork is maintained in this repository — please open issues and pull requests here.
 
-Alforpolio is a free, modern Ghost theme built for portfolio creators, technical writers, and developers. It extends Source with additional theme settings, typography options, social icons, and a lightbox for images.
+Alforpolio is a free, modern Ghost theme built for portfolio creators, technical writers, and developers. The goal is to provide a feature-rich theme that works out of the box — no coding required, no paid upgrades.
 
-This is **Alforpolio version 2** — a clean, modern rewrite on top of Source. The legacy version (built on [TryGhost/Solo](https://github.com/TryGhost/Solo)) is no longer actively developed. See [MODIFICATIONS.md](MODIFICATIONS.md) for full details.
+This is **Alforpolio version 2** — built on top of [TryGhost/Source](https://github.com/TryGhost/Source). The legacy version which is [Nanamein/Alforpolio-Legacy](https://github.com/NanaMein/Alforpolio-Legacy) (built on [TryGhost/Solo](https://github.com/TryGhost/Solo)) is no longer actively developed. See [MODIFICATIONS.md](MODIFICATIONS.md) for full details.
 
 ## Live Demo
 
 https://alfycodes.me
 
-## Features
+## What's Included
+
+Alforpolio v2 inherits the solid foundation of Source and adds on top of it. Here's what's in place now:
 
 - **Extended theme settings** — font selection, header styles, navigation layouts, colour options
 - **Lightbox** — click-to-expand images powered by PhotoSwipe
@@ -22,7 +24,21 @@ https://alfycodes.me
 - **Social icons** — X, Mastodon, Bluesky, LinkedIn, Instagram, TikTok, Threads, YouTube, Facebook
 - **Pagination** — built-in page navigation
 - **Email subscription** — footer signup partial
-- **Dark mode** — (roadmap, planned for upcoming release)
+
+## Roadmap
+
+These are planned features — some in progress, some under research:
+
+- **Light / Dark mode toggle** — user-switchable theme with system preference detection
+- **Post & page layout options** — more flexibility for how content is presented
+- **Tailwind CSS** *(under evaluation)* — considering whether to adopt Tailwind for easier customisation. This needs research to ensure full Ghost compatibility before committing.
+
+> [!NOTE]
+> Alforpolio will always remain **free and open source**. If you find it useful, consider supporting via donations to help fund continued development.
+
+## Vision
+
+Alforpolio aims to be a theme that works for **everyone** — developers who want to customise, and non-developers who just want things to work. The goal is to ship features that people would otherwise have to pay for or build themselves, while keeping the theme flexible enough for power users to extend.
 
 ## Quick Start
 
