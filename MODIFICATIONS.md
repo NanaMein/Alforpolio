@@ -40,7 +40,7 @@ This is the modern, actively maintained version of Alforpolio. It uses Source as
 
 Base: [TryGhost/Solo](https://github.com/TryGhost/Solo)
 
-The original Alforpolio was built on the Solo theme. That codebase is preserved for reference but is no longer actively developed. Key features from v1:
+The original Alforpolio was built on the Solo theme. That codebase is preserved for reference but is no longer actively developed. Key features from [Alforpolio Legacy](https://github.com/NanaMein/Alforpolio-Legacy):
 
 - Built-in light/night mode toggle (dark mode)
 - Extended theme settings and customisation options

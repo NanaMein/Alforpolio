@@ -2,12 +2,13 @@
 
 > [!IMPORTANT]
 > Alforpolio is a fork/derivative of the official [TryGhost/Source](https://github.com/TryGhost/Source) theme for Ghost.
+> The original Alforpolio codebase is preserved in the [Alforpolio Legacy](https://github.com/NanaMein/Alforpolio-Legacy) repository as Legacy as of now.
 >
 > This fork is maintained in this repository — please open issues and pull requests here.
 
 Alforpolio is a free, modern Ghost theme built for portfolio creators, technical writers, and developers. The goal is to provide a feature-rich theme that works out of the box — no coding required, no paid upgrades.
 
-This is **Alforpolio version 2** — built on top of [TryGhost/Source](https://github.com/TryGhost/Source). The legacy version which is [Nanamein/Alforpolio-Legacy](https://github.com/NanaMein/Alforpolio-Legacy) (built on [TryGhost/Solo](https://github.com/TryGhost/Solo)) is no longer actively developed. See [MODIFICATIONS.md](MODIFICATIONS.md) for full details.
+This is **Alforpolio:latest** — built on top of [TryGhost/Source](https://github.com/TryGhost/Source). The legacy version which is [Nanamein/Alforpolio-Legacy](https://github.com/NanaMein/Alforpolio-Legacy) (built on [TryGhost/Solo](https://github.com/TryGhost/Solo)) is no longer actively developed. See [MODIFICATIONS.md](MODIFICATIONS.md) for full details.
 
 ## Live Demo
 
@@ -15,7 +16,7 @@ https://alfycodes.me
 
 ## What's Included
 
-Alforpolio v2 inherits the solid foundation of Source and adds on top of it. Here's what's in place now:
+Alforpolio inherits the solid foundation of Source and adds on top of it. Here's what's in place now:
 
 - **Extended theme settings** — font selection, header styles, navigation layouts, colour options
 - **Lightbox** — click-to-expand images powered by PhotoSwipe
@@ -50,7 +51,7 @@ Alforpolio aims to be a theme that works for **everyone** — developers who wan
 ## Development
 
 Styles are compiled using Gulp/PostCSS to polyfill future CSS spec.
-You'll need [Bun](https://bun.sh/) (or [Node.js](https://nodejs.org/) v22+ with [pnpm](https://pnpm.io/)).
+You'll need [Bun](https://bun.sh/) (recommended) or [Node.js](https://nodejs.org/) v22+ with [pnpm](https://pnpm.io/) / [npm](https://www.npmjs.com/).
 
 From the theme's root directory:
 
@@ -63,7 +64,7 @@ bun run dev
 ```
 
 > [!TIP]
-> You can also use `pnpm install` / `pnpm dev` or `npm install` / `npm run dev` if you prefer — the standard Node.js toolchain works fine too.
+> You can also use `pnpm install` / `pnpm dev` or `npm install` / `npm run dev` if you prefer — the standard Node.js toolchain works fine too. Just be aware that this project's configurations (e.g. `AGENTS.md`, `.opencode/`) reference `bun` as the default. If you use npm or pnpm, you may want to update those files accordingly, or simply run the commands manually.
 
 Now you can edit `/assets/css/` files (and other source files like `/assets/js/` and `*.hbs`); the build will regenerate outputs under `/assets/built/`.
 
