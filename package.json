@@ -45,7 +45,7 @@
         "url": "https://github.com/Nanamein/Alforpolio.git"
     },
     "bugs": "https://github.com/Nanamein/Alforpolio/issues",
-    "contributors": "https://github.com/Nanamein/Alforpolio/graphs/contributors",
+    "contributors": ["https://github.com/Nanamein/Alforpolio/graphs/contributors"],
     "devDependencies": {
         "@tryghost/release-utils": "0.9.2",
         "@tryghost/theme-translations": "0.0.22",
