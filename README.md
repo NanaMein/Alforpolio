@@ -32,7 +32,7 @@ These are planned features — some in progress, some under research:
 
 - **Light / Dark mode toggle** — user-switchable theme with system preference detection
 - **Post & page layout options** — more flexibility for how content is presented
-- **Tailwind CSS** *(under evaluation)* — considering whether to adopt Tailwind for easier customisation. This needs research to ensure full Ghost compatibility before committing.
+- **Tailwind CSS** *(experimental / opt-in)* — Tailwind utilities are compiled to a separate stylesheet and can be loaded selectively in templates while keeping the existing theme CSS intact.
 
 > [!NOTE]
 > Alforpolio will always remain **free and open source**. If you find it useful, consider supporting via donations to help fund continued development.
@@ -50,8 +50,7 @@ Alforpolio aims to be a theme that works for **everyone** — developers who wan
 
 ## Development
 
-Styles are compiled using Gulp/PostCSS to polyfill future CSS spec.
-You'll need [Bun](https://bun.sh/) (recommended) or [Node.js](https://nodejs.org/) v22+ with [pnpm](https://pnpm.io/) / [npm](https://www.npmjs.com/).
+Styles are compiled using Gulp/PostCSS. The repo is **Bun-first**.
 
 From the theme's root directory:
 
@@ -59,14 +58,19 @@ From the theme's root directory:
 # Install dependencies
 bun install
 
+# (the repo uses Bun's lockfile (e.g. bun.lockb) — it's committed so others don't need to manage lockfiles)
+
 # Run build & watch for changes
 bun run dev
+
+# Build assets once (Tailwind + screen.css + JS)
+bun run build
+
+# Create the theme zip for Ghost deployment
+bun run zip
 ```
 
-> [!TIP]
-> You can also use `pnpm install` / `pnpm dev` or `npm install` / `npm run dev` if you prefer — the standard Node.js toolchain works fine too. Just be aware that this project's configurations (e.g. `AGENTS.md`, `.opencode/`) reference `bun` as the default. If you use npm or pnpm, you may want to update those files accordingly, or simply run the commands manually.
-
-Now you can edit `/assets/css/` files (and other source files like `/assets/js/` and `*.hbs`); the build will regenerate outputs under `/assets/built/`.
+Now you can edit `/assets/css/` files (and other source files like `/assets/js/` and `*.hbs`); the build regenerates outputs under `/assets/built/` (including the optional Tailwind output when enabled).
 
 ### Create a release zip
 
