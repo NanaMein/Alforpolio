@@ -1,97 +1,122 @@
-# Source
+# Alforpolio
 
-The default theme for [Ghost](http://github.com/tryghost/ghost/). This is the latest development version of Source! If you're just looking to download the latest release, head over to the [releases](https://github.com/TryGhost/Source/releases) page.
+> [!IMPORTANT]
+> Alforpolio is a fork/derivative of the official [TryGhost/Source](https://github.com/TryGhost/Source) theme for Ghost.
+> The original Alforpolio codebase is preserved in the [Alforpolio Legacy](https://github.com/NanaMein/Alforpolio-Legacy) repository as Legacy as of now.
+>
+> This fork is maintained in this repository — please open issues and pull requests here.
 
-&nbsp;
+Alforpolio is a free, modern Ghost theme built for portfolio creators, technical writers, and developers. The goal is to provide a feature-rich theme that works out of the box — no coding required, no paid upgrades.
 
-# First time using a Ghost theme?
+This is **Alforpolio:latest** — built on top of [TryGhost/Source](https://github.com/TryGhost/Source). The legacy version which is [Nanamein/Alforpolio-Legacy](https://github.com/NanaMein/Alforpolio-Legacy) (built on [TryGhost/Solo](https://github.com/TryGhost/Solo)) is no longer actively developed. See [MODIFICATIONS.md](MODIFICATIONS.md) for full details.
 
-Ghost uses a simple templating language called [Handlebars](http://handlebarsjs.com/) for its themes.
+## Live Demo
 
-This theme has lots of code comments to help explain what's going on just by reading the code. Once you feel comfortable with how everything works, we also have full [theme API documentation](https://ghost.org/docs/themes/) which explains every possible Handlebars helper and template.
+https://alfycodes.me
 
-**The main files are:**
+## What's Included
 
-- `default.hbs` - The parent template file, which includes your global header/footer
-- `home.hbs` - The homepage
-- `index.hbs` - The main template to generate a list of posts
-- `post.hbs` - The template used to render individual posts
-- `page.hbs` - Used for individual pages
-- `tag.hbs` - Used for tag archives, eg. "all posts tagged with `news`"
-- `author.hbs` - Used for author archives, eg. "all posts written by Jamie"
+Alforpolio inherits the solid foundation of Source and adds on top of it. Here's what's in place now:
 
-One neat trick is that you can also create custom one-off templates by adding the slug of a page to a template file. For example:
+- **Extended theme settings** — font selection, header styles, navigation layouts, colour options
+- **Lightbox** — click-to-expand images powered by PhotoSwipe
+- **Search toggle** — integrated search support
+- **Typography options** — sans, serif, and mono font choices for titles and body
+- **Social icons** — X, Mastodon, Bluesky, LinkedIn, Instagram, TikTok, Threads, YouTube, Facebook
+- **Pagination** — built-in page navigation
+- **Email subscription** — footer signup partial
 
-- `page-about.hbs` - Custom template for an `/about/` page
-- `tag-news.hbs` - Custom template for `/tag/news/` archive
-- `author-ali.hbs` - Custom template for `/author/ali/` archive
+## Roadmap
 
+These are planned features — some in progress, some under research:
 
-# Development
+- **Light / Dark mode toggle** — user-switchable theme with system preference detection
+- **Post & page layout options** — more flexibility for how content is presented
+- **Tailwind CSS** *(under evaluation)* — considering whether to adopt Tailwind for easier customisation. This needs research to ensure full Ghost compatibility before committing.
 
-Source styles are compiled using Gulp/PostCSS to polyfill future CSS spec. You'll need [Node](https://nodejs.org/) and [pnpm](https://pnpm.io/). After that, from the theme's root directory:
+> [!NOTE]
+> Alforpolio will always remain **free and open source**. If you find it useful, consider supporting via donations to help fund continued development.
+
+## Vision
+
+Alforpolio aims to be a theme that works for **everyone** — developers who want to customise, and non-developers who just want things to work. The goal is to ship features that people would otherwise have to pay for or build themselves, while keeping the theme flexible enough for power users to extend.
+
+## Quick Start
+
+1. Download the theme zip:
+   - from the **Releases** section, or
+   - build it locally (see below)
+2. In Ghost Admin → **Design**, upload the zip file.
+
+## Development
+
+Styles are compiled using Gulp/PostCSS to polyfill future CSS spec.
+You'll need [Bun](https://bun.sh/) (recommended) or [Node.js](https://nodejs.org/) v22+ with [pnpm](https://pnpm.io/) / [npm](https://www.npmjs.com/).
+
+From the theme's root directory:
 
 ```bash
-# install dependencies
-pnpm install
+# Install dependencies
+bun install
 
-# run development server
-pnpm dev
+# Run build & watch for changes
+bun run dev
 ```
 
-Now you can edit `/assets/css/` files, which will be compiled to `/assets/built/` automatically.
+> [!TIP]
+> You can also use `pnpm install` / `pnpm dev` or `npm install` / `npm run dev` if you prefer — the standard Node.js toolchain works fine too. Just be aware that this project's configurations (e.g. `AGENTS.md`, `.opencode/`) reference `bun` as the default. If you use npm or pnpm, you may want to update those files accordingly, or simply run the commands manually.
 
-The `zip` Gulp task packages the theme files into `dist/<theme-name>.zip`, which you can then upload to your site.
+Now you can edit `/assets/css/` files (and other source files like `/assets/js/` and `*.hbs`); the build will regenerate outputs under `/assets/built/`.
+
+### Create a release zip
 
 ```bash
-# create .zip file
-pnpm zip
+bun run zip
 ```
 
-# Publishing a release
+The `zip` Gulp task packages the theme files into `dist/alforpolio.zip`.
 
-Releases are shipped from an up-to-date, clean `main` branch in two steps. Before starting, configure `GST_TOKEN` with a GitHub token that can create releases in `TryGhost/Source`.
+### Publish a release
 
-First bump the version. This updates `package.json`, then creates a commit and annotated `v<version>` git tag:
+Releases are shipped from an up-to-date, clean `main` branch. Before starting, configure `GST_TOKEN` with a GitHub token that can create releases.
+
+First bump the version:
 
 ```bash
-# pick one of: patch | minor | major (or an explicit version, e.g. 1.8.0)
-pnpm version minor
+# pick one of: patch | minor | major (or an explicit version, e.g. 1.0.0)
+bun run --bun version minor
 ```
 
 Then run `ship`:
 
 ```bash
-pnpm ship
+bun run --bun ship
 ```
 
-`pnpm ship`:
+This builds the zip, runs GScan, pushes the version commit and tag, and creates a draft GitHub release. Review and publish the draft after the command completes.
 
-1. Builds the theme zip and runs GScan.
-2. Refuses to continue if the working tree is not clean after the build.
-3. Pushes the version commit and tag.
-4. Prompts for the minimum compatible Ghost version and creates a draft GitHub release with the generated changelog.
-
-Review and publish the draft GitHub release after the command completes. The pushed theme tag, rather than the GitHub release, is what the next Ghost release uses when updating its bundled Source theme.
-
-> [!NOTE]
-> `pnpm version` requires an explicit version or bump type. Run it before `pnpm ship`; the ship command does not perform the bump itself.
-
-# PostCSS Features Used
-
-- Autoprefixer - Don't worry about writing browser prefixes of any kind, it's all done automatically with support for the latest 2 major versions of every browser.
-
-
-# SVG Icons
-
-Source uses inline SVG icons, included via Handlebars partials. You can find all icons inside `/partials/icons`. To use an icon just include the name of the relevant file, eg. To include the SVG icon in `/partials/icons/rss.hbs` - use `{{> "icons/rss"}}`.
-
-You can add your own SVG icons in the same manner.
-
-# Translations
+### Theme Translations
 
 Please see [@TryGhost/Themes/theme-translations/README.md](https://github.com/TryGhost/Themes/blob/main/packages/theme-translations/README.md) for how to build, edit, or contribute translations.
 
-# Copyright & License
+## SVG Icons
 
-Copyright (c) 2013-2026 Ghost Foundation - Released under the [MIT license](LICENSE).
+Alforpolio uses inline SVG icons, included via Handlebars partials. You can find all icons inside `/partials/icons`. To use an icon just include the name of the relevant file, eg. To include the SVG icon in `/partials/icons/rss.hbs` — use `{{> "icons/rss"}}`.
+
+You can add your own SVG icons in the same manner.
+
+## PostCSS Features Used
+
+- **Autoprefixer** — Don't worry about writing browser prefixes of any kind, it's all done automatically with support for the latest 2 major versions of every browser.
+
+## Credits
+
+- Based on [TryGhost/Source](https://github.com/TryGhost/Source) by Ghost Foundation.
+- Legacy v1 based on [TryGhost/Solo](https://github.com/TryGhost/Solo) by Ghost Foundation.
+- Built for [Ghost](https://github.com/TryGhost/Ghost).
+
+## Copyright & License
+
+Copyright (c) 2013-2026 Ghost Foundation — Released under the [MIT license](LICENSE).
+
+Modifications by Nanamein (https://alfycodes.me) — see [MODIFICATIONS.md](MODIFICATIONS.md) — Released under the MIT license (see LICENSE).
