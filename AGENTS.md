@@ -6,14 +6,16 @@ This repository is the default Ghost theme. Keep changes focused on theme source
 
 ## Commands
 
-Use pnpm for this repo.
+Use **bun** for this repo (see `packageManager` in `package.json`).
 
 ```bash
-pnpm install --frozen-lockfile
-pnpm dev
-pnpm test:ci
-pnpm zip
+bun install
+bun run dev
+bun run test:ci
+bun run zip
 ```
+
+Node.js equivalents (`pnpm` / `npm`) also work — the scripts themselves are package-manager-agnostic. If a future contributor uses pnpm or npm, that is fine; the CI workflow should match whichever runner is configured.
 
 Run the test command before opening a PR when theme files, generated assets, dependencies, or CI change.
 
