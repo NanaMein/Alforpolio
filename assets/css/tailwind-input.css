@@ -1,0 +1,6 @@
+/*
+  Tailwind entry file.
+  We only generate utilities (no base/components) to minimize risk of conflicts.
+*/
+
+@tailwind utilities;

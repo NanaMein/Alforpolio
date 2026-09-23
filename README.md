@@ -32,7 +32,7 @@ These are planned features — some in progress, some under research:
 
 - **Light / Dark mode toggle** — user-switchable theme with system preference detection
 - **Post & page layout options** — more flexibility for how content is presented
-- **Tailwind CSS** *(under evaluation)* — considering whether to adopt Tailwind for easier customisation. This needs research to ensure full Ghost compatibility before committing.
+- **Tailwind CSS** *(experimental / opt-in)* — Tailwind utilities are compiled to `assets/built/tailwind.css` and can be loaded selectively in templates so the existing theme CSS stays intact.
 
 > [!NOTE]
 > Alforpolio will always remain **free and open source**. If you find it useful, consider supporting via donations to help fund continued development.
@@ -50,8 +50,7 @@ Alforpolio aims to be a theme that works for **everyone** — developers who wan
 
 ## Development
 
-Styles are compiled using Gulp/PostCSS to polyfill future CSS spec.
-You'll need [Bun](https://bun.sh/) (recommended) or [Node.js](https://nodejs.org/) v22+ with [pnpm](https://pnpm.io/) / [npm](https://www.npmjs.com/).
+Styles are compiled using Gulp/PostCSS. The repo is **Bun-first**.
 
 From the theme's root directory:
 
@@ -59,14 +58,63 @@ From the theme's root directory:
 # Install dependencies
 bun install
 
+# (the repo uses Bun's lockfile (e.g. bun.lockb) — it's committed so others don't need to manage lockfiles)
+
 # Run build & watch for changes
 bun run dev
+
+# Build assets once (Tailwind + screen.css + JS)
+bun run build
+
+# Create the theme zip for Ghost deployment
+bun run zip
 ```
 
-> [!TIP]
-> You can also use `pnpm install` / `pnpm dev` or `npm install` / `npm run dev` if you prefer — the standard Node.js toolchain works fine too. Just be aware that this project's configurations (e.g. `AGENTS.md`, `.opencode/`) reference `bun` as the default. If you use npm or pnpm, you may want to update those files accordingly, or simply run the commands manually.
+Now you can edit `/assets/css/` files (and other source files like `/assets/js/` and `*.hbs`); the build regenerates outputs under `/assets/built/` (including the optional Tailwind output when enabled).
 
-Now you can edit `/assets/css/` files (and other source files like `/assets/js/` and `*.hbs`); the build will regenerate outputs under `/assets/built/`.
+## Tailwind (extension) notes — selective mode
+
+### What “selective” means here
+- Tailwind is **always compiled** during the normal build/zip workflow.
+- Tailwind is **only loaded/applied** in the browser on certain pages via `default.hbs`.
+- Currently, `default.hbs` loads Tailwind on:
+  - `tag`
+  - `post`
+
+To change which templates load Tailwind, edit **`default.hbs`** and update this block:
+
+```hbs
+{{#is "tag, post"}}
+    <link rel="stylesheet" type="text/css" href="{{asset "built/tailwind.css"}}">
+{{/is}}
+```
+
+### How to extend safely (SRP/OCP)
+Use Tailwind as an *overlay* on top of the existing Source/Theme CSS:
+- Prefer changing **non-typography** properties first (backgrounds, spacing, borders, hover effects).
+- Avoid overriding heading/body sizing until you understand the theme’s existing typography rules.
+- Edit the smallest surface area possible:
+  - page templates like `tag.hbs`, `post.hbs`
+  - or partials/components like `partials/components/*`
+
+**Important:** partials/components do not “load Tailwind” by themselves.
+
+- Ghost renders templates (like `tag.hbs` / `post.hbs`) and those templates include partials/components via `{{> "..."}}`.
+- Tailwind will only be applied if **the page’s HTML includes** `{{asset "built/tailwind.css"}}` (controlled in `default.hbs`).
+- After that, any partial/component that contains Tailwind classes will automatically pick up the Tailwind styles.
+- If a partial/component doesn’t include Tailwind classes, the normal theme CSS is used as the fallback.
+
+### “Pure Tailwind mode” (danger)
+If you want Tailwind applied across *all* pages/templates (i.e. full migration), you can remove the `{{#is ...}}` guard in `default.hbs` and always load `tailwind.css`.
+
+This is **dangerous / higher risk** because Tailwind utilities can override existing theme class styles on pages you didn’t intend.
+It should only be done when you’re ready to gradually migrate UI consistently.
+
+### Records (so we don’t lose track)
+- Tailwind build integrated into `gulp build` (compiled output: `assets/built/tailwind.css`)
+- Selective loading enabled for `tag`
+- Selective loading enabled for `post`
+- Experimented with non-typography utilities (hover/background styling)
 
 ### Create a release zip
 

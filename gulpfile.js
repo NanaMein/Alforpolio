@@ -13,6 +13,7 @@ const concat = require('gulp-concat');
 const uglify = require('gulp-uglify');
 const beeper = require('beeper');
 const fs = require('fs');
+const {exec} = require('child_process');
 
 // postcss plugins
 const autoprefixer = require('autoprefixer');
@@ -42,6 +43,23 @@ function hbs(done) {
         src(['*.hbs', 'partials/**/*.hbs']),
         livereload()
     ], handleError(done));
+}
+
+function tailwind(done) {
+    // Builds assets/built/tailwind.css from assets/css/tailwind-input.css
+    // using your Tailwind config.
+    exec('bun run tailwind:build', (err, stdout, stderr) => {
+        if (stdout) console.log(stdout.toString());
+        if (stderr) console.error(stderr.toString());
+
+        if (err) {
+            beeper();
+            return done(err);
+        }
+
+        livereload();
+        return done();
+    });
 }
 
 function css(done) {
@@ -94,9 +112,13 @@ function zipper(done) {
 const cssWatcher = () => watch('assets/css/**', css);
 const jsWatcher = () => watch('assets/js/**', js);
 const hbsWatcher = () => watch(['*.hbs', 'partials/**/*.hbs'], hbs);
+const tailwindWatcher = () => watch(
+    ['assets/css/tailwind-input.css', './*.hbs', 'partials/**/*.hbs', 'tailwind.config.cjs'],
+    tailwind
+);
 const localesWatcher = () => watch('./locales-local/**/*.json', mergeLocales());
-const watcher = parallel(cssWatcher, jsWatcher, hbsWatcher, localesWatcher);
-const build = series(css, js, mergeLocales());
+const watcher = parallel(cssWatcher, jsWatcher, hbsWatcher, tailwindWatcher, localesWatcher);
+const build = series(tailwind, css, js, mergeLocales());
 
 exports.build = build;
 exports.zip = series(build, zipper);
