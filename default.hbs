@@ -18,7 +18,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset "built/screen.css"}}">
 
     {{!-- Tailwind (opt-in / selective). Load only on specific templates while experimenting. --}}
-    {{#is "tag, post, home, page"}}
+    {{#is "tag, post, home, page, author, index"}}
         <link rel="stylesheet" type="text/css" href="{{asset "built/tailwind.css"}}">
     {{/is}}
 
