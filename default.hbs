@@ -17,6 +17,11 @@
     {{!-- Theme assets - use the {{asset}} helper to reference styles & scripts, this will take care of caching and cache-busting automatically --}}
     <link rel="stylesheet" type="text/css" href="{{asset "built/screen.css"}}">
 
+    {{!-- Tailwind (opt-in / selective). Load only on specific templates while experimenting. --}}
+    {{#is "tag, post, home, page"}}
+        <link rel="stylesheet" type="text/css" href="{{asset "built/tailwind.css"}}">
+    {{/is}}
+
     {{!-- Custom background color --}}
     <style>
         :root {
