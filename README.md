@@ -32,7 +32,7 @@ These are planned features — some in progress, some under research:
 
 - **Light / Dark mode toggle** — user-switchable theme with system preference detection
 - **Post & page layout options** — more flexibility for how content is presented
-- **Tailwind CSS** *(experimental / opt-in)* — Tailwind utilities are compiled to `assets/built/tailwind.css` and can be loaded selectively in templates so the existing theme CSS stays intact.
+- **Tailwind CSS — active migration** — the end goal is a Tailwind-first theme, migrated one `.hbs` file at a time. Tailwind utilities compile to `assets/built/tailwind.css` and currently load selectively; the legacy `screen.css` stays intact until each slice is verified. See [docs/PLAN.md](docs/PLAN.md) for the plan and [docs/INVENTORY.md](docs/INVENTORY.md) for the file map.
 
 > [!NOTE]
 > Alforpolio will always remain **free and open source**. If you find it useful, consider supporting via donations to help fund continued development.
@@ -74,17 +74,25 @@ Now you can edit `/assets/css/` files (and other source files like `/assets/js/`
 
 ## Tailwind (extension) notes — selective mode
 
+> [!NOTE]
+> Migration status, file relationships, and the decision log live in **[docs/](docs/README.md)** —
+> [PLAN.md](docs/PLAN.md) (what's next), [INVENTORY.md](docs/INVENTORY.md) (file map), [JOURNAL.md](docs/JOURNAL.md) (verdicts & history).
+
 ### What “selective” means here
 - Tailwind is **always compiled** during the normal build/zip workflow.
 - Tailwind is **only loaded/applied** in the browser on certain pages via `default.hbs`.
 - Currently, `default.hbs` loads Tailwind on:
   - `tag`
   - `post`
+  - `home`
+  - `page`
+  - `index`
+  - `author`
 
 To change which templates load Tailwind, edit **`default.hbs`** and update this block:
 
 ```hbs
-{{#is "tag, post"}}
+{{#is "tag, post, home, page, author, index"}}
     <link rel="stylesheet" type="text/css" href="{{asset "built/tailwind.css"}}">
 {{/is}}
 ```
@@ -110,10 +118,12 @@ If you want Tailwind applied across *all* pages/templates (i.e. full migration),
 This is **dangerous / higher risk** because Tailwind utilities can override existing theme class styles on pages you didn’t intend.
 It should only be done when you’re ready to gradually migrate UI consistently.
 
-### Records (so we don’t lose track)
+### Records
+
+History and decisions are kept in **[docs/JOURNAL.md](docs/JOURNAL.md)** (append-only). Past records:
+
 - Tailwind build integrated into `gulp build` (compiled output: `assets/built/tailwind.css`)
-- Selective loading enabled for `tag`
-- Selective loading enabled for `post`
+- Selective loading enabled for `tag`, `post`, `home`, `page`, `author`, `index`
 - Experimented with non-typography utilities (hover/background styling)
 
 ### Create a release zip
