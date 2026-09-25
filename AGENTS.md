@@ -36,3 +36,10 @@ Run the test command before opening a PR when theme files, generated assets, dep
 - Prefer Tailwind “overlay” changes first (backgrounds/hover/spacing) and avoid typography utilities until you understand the theme’s sizing rules.
 - Do not commit node_modules/, local Ghost content, generated zip files outside tracked release expectations, or secrets.
 - Repo settings, descriptions, and branch rules belong on the GitHub repository; internal clean-repos metadata stays in TryGhost/cleanrepos.
+
+## Journal retrieval (so you don’t re-read everything)
+- When the user asks “what did we decide about X?” or “what happened with Y?”, **do not** scan from the top of `docs/JOURNAL.md`.
+- Instead, search for the most relevant keyword against `Topic` / `Decision` / `Executed` (and optionally `Files`) and then summarize only the last **1–3** matching verdicts/tasks.
+- Preferred workflow (if available): run `bun run journal:query --match "<keyword>" --n 3`.
+- If a keyword misses, broaden it (e.g. “Tailwind gate” → “gate” / “default.hbs” / “author”).
+- Always include the `JRN-XXXX` IDs you relied on in your summary, so later you can re-check without rebuilding context.
