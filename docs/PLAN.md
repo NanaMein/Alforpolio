@@ -13,6 +13,30 @@ Updated: 2026-09-24 · status lives only in this file · relationships → [INVE
    - anything reachable from `default.hbs` (nav, footer, fonts, lightbox, email-sub, search-toggle) → gate impact should be checked in `docs/INVENTORY.md`
 5. **Order is flexible.** Pick any file; the only check is "which pages render this?" → gate impact (INVENTORY column).
 
+---
+## Migration phases (Tailwind overlay → semantic custom CSS → legacy cutover)
+
+This migration follows a 3-phase policy so we can iterate safely on a production-safe VPS.
+
+### Phase 1 — Tailwind overlay (behavior hook stays)
+- Add/extend Tailwind utilities **without breaking existing behavior**.
+- Keep legacy `gh-*` / `is-*` markup and legacy CSS behavior in place.
+- No legacy deletion in this phase.
+
+### Phase 2 — Semantic custom CSS (permission-gated)
+- Introduce your **custom semantic selectors** via Tailwind authoring using `@apply`.
+- Semantic selectors must use a unique prefix `ap-` (never `gh-*`) so we can fully phase out legacy selectors later without accidental coupling.
+- Mirror the relevant part of `screen.css` by creating a new class that represents that styling contract.
+- **Legacy CSS stays present** (so rollback is easy). It may be annotated with an identifier comment so we can find it later.
+  - NOTE: Prefer “annotate + override” over “comment-out/disable” to avoid accidental behavior regressions.
+- Phase 2 starts only after you explicitly approve.
+
+### Phase 3 — Cut over responsibility (behavior moved out of legacy)
+- After Phase 2 is verified, we remove/replace what’s now redundant.
+- Legacy cutover work happens as part of later pruning/cleanup (Wave 5), not during Phase 1.
+
+> Phase 3 success condition: the CTA/layout/typography behavior is now driven by `ap-*` (and any necessary JS), so the legacy `gh-*` styling selectors are no longer required for correct rendering.
+
 ## Verify + deploy loop (per file)
 
 ```bash
@@ -41,8 +65,8 @@ Restore point: `git tag pre-tailwind` (create before Wave 1 starts).
 
 | File | Gate impact | Status |
 |------|-------------|--------|
-| `partials/components/cta.hbs` | none | pending |
-| `partials/feature-image.hbs` | none | pending |
+ | `partials/components/cta.hbs` | none | **done** |
+ | `partials/feature-image.hbs` | none | pending |
 
 ## Wave 2 — Feature slices (optional order, per rule 5)
 
@@ -82,6 +106,8 @@ Restore point: `git tag pre-tailwind` (create before Wave 1 starts).
 
 ## File checklist (all 42 — flip to `done` as migrated)
 
+> Checklist note: `done` currently means **Phase 1 overlay** is complete for that file. Phase 2/3 will extend/replace this later once you approve Phase 2.
+
 - [ ] default.hbs *(only when gate flips — rule 4)*
 - [ ] home.hbs
 - [ ] index.hbs
@@ -95,7 +121,7 @@ Restore point: `git tag pre-tailwind` (create before Wave 1 starts).
 - [ ] components/header-content.hbs
 - [ ] components/post-list.hbs
 - [ ] components/featured.hbs
-- [ ] components/cta.hbs
+ - [x] components/cta.hbs
 - [ ] post-card.hbs
 - [ ] email-subscription.hbs
 - [ ] feature-image.hbs
