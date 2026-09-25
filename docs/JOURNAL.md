@@ -40,4 +40,48 @@ Status is NOT tracked here → [PLAN.md](PLAN.md).
 ### JRN-0007 · 2026-09-24 · verdict
 - **Topic:** Tailwind gate expanded to include `index` + `author`
 - **Decision:** `default.hbs` now loads `tailwind.css` on `tag, post, home, page, author, index`, so gate impact for shared feed/nav/footer files is reduced accordingly (see updated `docs/INVENTORY.md` + `docs/PLAN.md`).
-- **Applies to:** `default.hbs` gate; subsequent migration files
+  - **Applies to:** `default.hbs` gate; subsequent migration files
+
+### JRN-0008 · 2026-09-25 · verdict
+- **Topic:** lowest-risk `.hbs` targets for “add Tailwind, don’t break old CSS yet”
+- **Decision:** Start with files that have **gate impact = none** and minimal JS/Ghost hook risk:
+  - `partials/components/cta.hbs` (Wave 1 warmup)
+  - `partials/feature-image.hbs` (Wave 1 warmup; keep `.gh-feature-image` hook)
+  - `partials/typography/*` (fonts dispatcher + sans/serif/mono)
+  - `partials/icons/*` (leaf markup)
+- **Plan rule:** Use Tailwind utilities as an overlay (extend, don’t modify) and defer `screen.css` pruning until Wave 5 after verification.
+
+### JRN-0009 · 2026-09-25 · task
+- **Topic:** Tailwind overlay for CTA
+- **Executed:** added non-breaking Tailwind utility classes to `partials/components/cta.hbs` (layout/spacing only; kept existing `gh-*` classes)
+- **Verification:** `bun run tailwind:build` + `bun run test:ci` (gscan fatal compatibility clean)
+  - **Files:** `partials/components/cta.hbs`, generated `assets/built/tailwind.css`(+map)
+
+### JRN-0010 · 2026-09-25 · verdict
+- **Topic:** 3-phase migration policy for “custom semantic CSS” work
+- **Decision:** Adopt the user-defined phases:
+  - **Phase 1:** Tailwind overlay while legacy behavior/hooks stay intact.
+  - **Phase 2:** Permission-gated semantic custom CSS using Tailwind `@apply` + mirroring `screen.css`; legacy CSS stays present and is annotated (prefer annotate+override over comment-out/disable).
+  - **Phase 3:** Cutover responsibility after Phase 2 verification; cleanup/pruning in Wave 5.
+- **Files:** `docs/PLAN.md` updated to define phases + clarify checklist meaning.
+
+### JRN-0011 · 2026-09-25 · verdict
+- **Topic:** semantic selector namespace decided for Phase 2/3
+- **Decision:** Use `ap-` prefix for all semantic custom CSS selectors (unique from `gh-*`). This enables safe phase-out by removing legacy dependency only after `ap-*` is verified.
+- **Files:** `docs/PLAN.md` updated to reflect `ap-` prefix requirement.
+
+### JRN-0012 · 2026-09-25 · task
+- **Topic:** make JOURNAL context retrieval easy
+- **Executed:**
+  - Added `scripts/journal-query.js` + `bun run journal:query` to fetch the last matching JOURNAL entries by keyword.
+  - Updated `AGENTS.md` with a “Journal retrieval” protocol (search by Topic/Decision/Executed, summarize only the last 1–3 matches).
+- **Verification:** `bun run journal:query --match "Tailwind gate" --n 3` returns `JRN-0007` as the latest relevant verdict.
+- **Files:** `scripts/journal-query.js`, `package.json`, `AGENTS.md`
+
+### JRN-0013 · 2026-09-25 · task
+- **Topic:** Exclude `scripts/**` from release zip
+- **Executed:** updated `gulpfile.js` zip exclude list to add `!scripts` and `!scripts/**`
+- **Verification:** `bun run test:ci` (zip + gscan fatal compatibility clean)
+- **Files:** `gulpfile.js`
+
+(End of file - total 79 lines)
