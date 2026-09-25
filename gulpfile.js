@@ -103,6 +103,7 @@ function zipper(done) {
             '!AGENTS.md',
             '!CLAUDE.md',
             '!gulpfile.js',
+            '!scripts', '!scripts/**',
             '!docs',
             '!docs/**'
         ]),

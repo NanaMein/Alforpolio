@@ -13,6 +13,7 @@
     "zip": "gulp zip",
     "build": "gulp build",
     "tailwind:build": "bunx tailwindcss -i ./assets/css/tailwind-input.css -o ./assets/built/tailwind.css --config ./tailwind.config.cjs --minify",
+    "journal:query": "bun scripts/journal-query.js",
     "test": "gscan .",
     "test:ci": "gscan --fatal --verbose .",
     "pretest": "bun run zip",

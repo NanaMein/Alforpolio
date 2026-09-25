@@ -1,6 +1,29 @@
 /*
-  Tailwind entry file.
-  We only generate utilities (no base/components) to minimize risk of conflicts.
+  Tailwind entry file (human-edited).
+
+  This theme uses Tailwind in **migration mode**:
+  - Phase 1: utilities as an overlay (no behavior hooks touched)
+  - Phase 2/3: semantic custom classes prefixed with `ap-` via `@apply`
+
+  Keep `ap-*` definitions near their matching `screen.css` section
+  so we can search + reason about “CTA, Typography, Footer…” quickly.
 */
 
 @tailwind utilities;
+
+/* ------------------------------------------------------------
+   Semantic selector namespace (Phase 2/3)
+   ------------------------------------------------------------
+   Rules of thumb:
+   - Semantic classes must use the `ap-` prefix (never `gh-*`).
+   - Prefer small, composable classes: `ap-cta`, `ap-cta-title`, etc.
+   - When you add new `ap-*` blocks, place them in the correct section below.
+
+   (Intentionally empty for now — CTA overlay work is in Phase 1.)
+*/
+
+/* 9. CTA ------------------------------------------------------ */
+
+/* 15. Typography ------------------------------------------- */
+
+/* 21. Footer ----------------------------------------------- */
