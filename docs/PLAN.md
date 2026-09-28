@@ -1,6 +1,6 @@
-# Migration plan — Tailwind-first Alforpolio
+# Migration plan — Tailwind mirror with legacy behavior retained
 
-Updated: 2026-09-24 · status lives only in this file · relationships → [INVENTORY.md](INVENTORY.md) · verdicts/tasks → [JOURNAL.md](JOURNAL.md).
+This is an advisory roadmap and checklist, not evidence of current code state or a standing instruction to perform work. Current human direction wins. Verify each item's implementation in source and tests. Template relationships → [INVENTORY.md](INVENTORY.md) · concise project context → [OPERATIONAL.md](OPERATIONAL.md).
 
 ## Ground rules (from verdicts — JRN-0002…0005)
 

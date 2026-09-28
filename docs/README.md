@@ -14,9 +14,10 @@ After each settled discussion, the assistant updates the file(s) below in the sa
 
 | File | What it holds | Mutability |
 |------|---------------|------------|
-| [PLAN.md](PLAN.md) | Migration waves, per-file checklist, status, verify/deploy steps | Status changes in place |
-| [INVENTORY.md](INVENTORY.md) | Every `.hbs` file: purpose, relationship counts, nested totals, `@custom` map, hook map, gate impact | Regenerated when structure changes |
-| [JOURNAL.md](JOURNAL.md) | Append-only log: baselines, verdicts, executed tasks | Never rewritten, only appended |
+| [PLAN.md](PLAN.md) | Tailwind migration approach and checklist | Checklist is advisory; verify code before relying on status |
+| [INVENTORY.md](INVENTORY.md) | Snapshot of `.hbs` files, relationships, hooks, and gate impact | Navigation aid; verify relationships in source |
+| [OPERATIONAL.md](OPERATIONAL.md) | Small set of durable, verifiable context notes and optional weekly milestones | Human-approved, concise, and descriptive; no per-task logs |
+| [JOURNAL.md](JOURNAL.md) | Retired compatibility pointer for old links | Historical entries removed; not a source of truth |
 
 Rule: **status lives only in PLAN.md**. INVENTORY is the map (no status), JOURNAL is history (no status). That prevents three files drifting out of sync.
 

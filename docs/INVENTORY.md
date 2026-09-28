@@ -1,7 +1,7 @@
 # File inventory — `.hbs` relationship map
 
 Snapshot: 2026-09-24 · 42 templates total (7 root + 35 partials) · maintained by assistant.
-Status/checklist → [PLAN.md](PLAN.md) · history → [JOURNAL.md](JOURNAL.md).
+Migration checklist → [PLAN.md](PLAN.md) · durable reference → [OPERATIONAL.md](OPERATIONAL.md). This inventory is a snapshot; confirm relationships in source before relying on it.
 
 **Tailwind gate (`default.hbs`): loads on `tag, post, home, page, author, index`. Missing: none.**
 

@@ -75,8 +75,8 @@ Now you can edit `/assets/css/` files (and other source files like `/assets/js/`
 ## Tailwind (extension) notes — selective mode
 
 > [!NOTE]
-> Migration status, file relationships, and the decision log live in **[docs/](docs/README.md)** —
-> [PLAN.md](docs/PLAN.md) (what's next), [INVENTORY.md](docs/INVENTORY.md) (file map), [JOURNAL.md](docs/JOURNAL.md) (verdicts & history).
+> Migration guidance and file relationships live in **[docs/](docs/README.md)** —
+> [PLAN.md](docs/PLAN.md) (migration checklist), [INVENTORY.md](docs/INVENTORY.md) (template map), and [OPERATIONAL.md](docs/OPERATIONAL.md) (brief, descriptive context). Use `git log` for recorded changes; these documents are not proof of current code state.
 
 ### What “selective” means here
 - Tailwind is **always compiled** during the normal build/zip workflow.
@@ -118,9 +118,9 @@ If you want Tailwind applied across *all* pages/templates (i.e. full migration),
 This is **dangerous / higher risk** because Tailwind utilities can override existing theme class styles on pages you didn’t intend.
 It should only be done when you’re ready to gradually migrate UI consistently.
 
-### Records
+### Current state and history
 
-History and decisions are kept in **[docs/JOURNAL.md](docs/JOURNAL.md)** (append-only). Past records:
+Check the source files and run relevant tests to determine current implementation status. `docs/OPERATIONAL.md` is a brief reference, not a work log or source of truth. Use `git log` for changes recorded in version control; the retired `docs/JOURNAL.md` is kept only for old links.
 
 - Tailwind build integrated into `gulp build` (compiled output: `assets/built/tailwind.css`)
 - Selective loading enabled for `tag`, `post`, `home`, `page`, `author`, `index`
