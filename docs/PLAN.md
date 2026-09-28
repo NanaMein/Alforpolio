@@ -8,13 +8,13 @@ Use the stages internally to choose safe work; routine user updates should expla
 
 ### Phase 1 — Local Tailwind overlay
 
-For a contained styling request, first check the real rendering scope and the Tailwind gate. Add raw Tailwind utilities to the relevant `.hbs` markup, matching existing visual values and states. Keep existing `gh-*` classes, Ghost helpers, and JavaScript hooks. Do not redesign or modify existing script behavior as an incidental styling change.
+For a contained styling request, first check the real rendering scope and the Tailwind gate. Add raw Tailwind utilities to the relevant `.hbs` markup, matching existing visual values and states. Keep existing `gh-*` markup classes, Ghost helpers, and JavaScript hooks; AP styling classes are additive rather than replacements for those hooks. Do not redesign or modify existing script behavior as an incidental styling change.
 
 ### Phase 2 — Impact analysis and proposal
 
 If an existing selector, component, JavaScript behavior, or Ghost setting may affect more than the requested markup, inspect its actual consumers before changing it. Present the affected files/behaviors, explain the local-versus-shared choices, describe rollback and verification, and ask the human what scope they want. This stage is planning and approval, not permission to implement the broad change.
 
-For an approved reusable Tailwind component, use `ap-*` for CSS/component classes and author Tailwind rules in `assets/css/tailwind-input.css`. `ap-*` is not the JavaScript version namespace. Keep old CSS declarations and all `gh-*` classes; do not rename or remove them as part of migration.
+For an approved reusable Tailwind component, use `ap-*` for CSS/component classes and author Tailwind rules in `assets/css/tailwind-input.css`. `ap-*` is not the JavaScript version namespace. Keep existing `gh-*` markup classes and old CSS declarations during the overlay; these are separate compatibility measures.
 
 ### Phase 3 — Approved execution
 
@@ -22,7 +22,7 @@ Implement only the plan the human approved. Existing JavaScript must be extended
 
 ## Legacy CSS cleanup threshold
 
-Only consider pruning legacy CSS when the owner judges that roughly **80–95% of the intended styling surface** has a Tailwind counterpart. This is a human review trigger, not automatic permission or a mathematical completion claim. The owner must explicitly approve cleanup. Then remove legacy CSS gradually in small, isolated slices, verifying each slice before moving on. Keep existing `gh-*` markup classes and rollback options available throughout.
+Only consider pruning legacy CSS declarations from `screen.css` when the owner judges that roughly **80–95% of the intended styling surface** has a Tailwind counterpart. This threshold applies to CSS rules only; it does not authorize removing `gh-*` markup classes, deleting `screen.css` or its build dependencies wholesale, or automatic cleanup. It is a human review trigger, not a mathematical completion claim. The owner must explicitly approve cleanup. Then remove legacy CSS gradually in small, isolated slices, verifying each slice before moving on. Keep existing `gh-*` markup classes and rollback options available throughout.
 
 ## Separate future work: configurable theme options
 

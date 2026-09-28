@@ -32,7 +32,7 @@ These are planned features — some in progress, some under research:
 
 - **Light / Dark mode toggle** — user-switchable theme with system preference detection
 - **Post & page layout options** — more flexibility for how content is presented
-- **Tailwind CSS — active migration** — mirror existing styling in Tailwind, one relevant slice at a time. Use utilities in `.hbs` for contained local styling and `ap-*` component classes in `assets/css/tailwind-input.css` for approved reusable styling. Keep existing `gh-*` classes and JavaScript behavior; extend scripts with distinct `V1` functions/hooks rather than replacing existing behavior. Consider gradual legacy CSS pruning only after roughly 80–95% of the intended styling surface has a Tailwind counterpart and the owner approves. Tailwind compiles to `assets/built/tailwind.css` and currently loads selectively. See [docs/PLAN.md](docs/PLAN.md) and [docs/INVENTORY.md](docs/INVENTORY.md).
+- **Tailwind CSS — active migration** — mirror existing styling in Tailwind, one relevant slice at a time. Use utilities in `.hbs` for contained local styling and `ap-*` component classes in `assets/css/tailwind-input.css` for approved reusable styling. Keep existing `gh-*` markup classes and JavaScript behavior; `ap-*` styling classes are additive, not replacements for those hooks. Extend scripts with distinct `V1` functions/hooks rather than replacing existing behavior. Legacy `screen.css` declarations are a separate concern: the roughly 80–95% threshold applies only to reviewing/pruning CSS rules, after explicit owner approval and in gradual verified slices. It does not authorize removing markup classes or deleting `screen.css` and its build dependencies wholesale. Tailwind compiles to `assets/built/tailwind.css` and currently loads selectively. See [docs/PLAN.md](docs/PLAN.md) and [docs/INVENTORY.md](docs/INVENTORY.md).
 
 > [!NOTE]
 > Alforpolio will always remain **free and open source**. If you find it useful, consider supporting via donations to help fund continued development.
@@ -101,7 +101,7 @@ To change which templates load Tailwind, edit **`default.hbs`** and update this 
 Use Tailwind to mirror and extend the existing Source/Theme styling:
 - Add utilities to the relevant `.hbs` file when the styling is local to that markup.
 - Put reusable component styles in `assets/css/tailwind-input.css` (use `ap-*` for semantic component selectors).
-- Keep the existing `gh-*` markup classes and legacy CSS declarations during migration so existing behavior and styling remain available for rollback.
+- Keep existing `gh-*` markup classes and JavaScript hooks during migration; add AP styling classes alongside them. Separately, retain legacy CSS declarations in `screen.css` during the overlay so styling remains available for rollback.
 - For approved new JavaScript behavior, add separate `V1`-suffixed functions and `data-js-<feature>-v1` hooks; do not repurpose or replace existing hooks.
 - Prefer changing **non-typography** properties first (backgrounds, spacing, borders, hover effects).
 - Avoid overriding heading/body sizing until you understand the theme’s existing typography rules.
@@ -111,7 +111,7 @@ Use Tailwind to mirror and extend the existing Source/Theme styling:
 
 ## Legacy CSS removal
 
-Keep the legacy `screen.css` rules throughout the Tailwind migration. When the owner judges that roughly 80–95% of the intended styling surface has a Tailwind counterpart, review the remaining legacy coverage and ask for explicit approval before pruning. Remove legacy rules gradually, in small verified slices; the percentage is a review trigger, not automatic permission.
+Keep the legacy `screen.css` rules throughout the Tailwind overlay. The roughly 80–95% threshold applies only to reviewing/pruning legacy CSS declarations—not to removing `gh-*` markup classes, deleting the stylesheet or build dependencies wholesale, or automatic cleanup. When the owner judges the intended styling surface has sufficient Tailwind coverage, get explicit approval and prune CSS rules gradually in small, verified slices. Retain `gh-*` markup classes even if their visual CSS rules are later retired.
 
 **Important:** partials/components do not “load Tailwind” by themselves.
 
