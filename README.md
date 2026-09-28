@@ -32,7 +32,7 @@ These are planned features — some in progress, some under research:
 
 - **Light / Dark mode toggle** — user-switchable theme with system preference detection
 - **Post & page layout options** — more flexibility for how content is presented
-- **Tailwind CSS — active migration** — the end goal is a Tailwind-first theme, migrated one `.hbs` file at a time. Tailwind utilities compile to `assets/built/tailwind.css` and currently load selectively; the legacy `screen.css` stays intact until each slice is verified. See [docs/PLAN.md](docs/PLAN.md) for the plan and [docs/INVENTORY.md](docs/INVENTORY.md) for the file map.
+- **Tailwind CSS — active migration** — mirror existing styling in Tailwind, one relevant slice at a time. Use utilities in `.hbs` for contained local styling and `ap-*` component classes in `assets/css/tailwind-input.css` for approved reusable styling. Keep existing `gh-*` classes and JavaScript behavior; extend scripts with distinct `V1` functions/hooks rather than replacing existing behavior. Consider gradual legacy CSS pruning only after roughly 80–95% of the intended styling surface has a Tailwind counterpart and the owner approves. Tailwind compiles to `assets/built/tailwind.css` and currently loads selectively. See [docs/PLAN.md](docs/PLAN.md) and [docs/INVENTORY.md](docs/INVENTORY.md).
 
 > [!NOTE]
 > Alforpolio will always remain **free and open source**. If you find it useful, consider supporting via donations to help fund continued development.
@@ -98,12 +98,20 @@ To change which templates load Tailwind, edit **`default.hbs`** and update this 
 ```
 
 ### How to extend safely (SRP/OCP)
-Use Tailwind as an *overlay* on top of the existing Source/Theme CSS:
+Use Tailwind to mirror and extend the existing Source/Theme styling:
+- Add utilities to the relevant `.hbs` file when the styling is local to that markup.
+- Put reusable component styles in `assets/css/tailwind-input.css` (use `ap-*` for semantic component selectors).
+- Keep the existing `gh-*` markup classes and legacy CSS declarations during migration so existing behavior and styling remain available for rollback.
+- For approved new JavaScript behavior, add separate `V1`-suffixed functions and `data-js-<feature>-v1` hooks; do not repurpose or replace existing hooks.
 - Prefer changing **non-typography** properties first (backgrounds, spacing, borders, hover effects).
 - Avoid overriding heading/body sizing until you understand the theme’s existing typography rules.
 - Edit the smallest surface area possible:
   - page templates like `tag.hbs`, `post.hbs`
   - or partials/components like `partials/components/*`
+
+## Legacy CSS removal
+
+Keep the legacy `screen.css` rules throughout the Tailwind migration. When the owner judges that roughly 80–95% of the intended styling surface has a Tailwind counterpart, review the remaining legacy coverage and ask for explicit approval before pruning. Remove legacy rules gradually, in small verified slices; the percentage is a review trigger, not automatic permission.
 
 **Important:** partials/components do not “load Tailwind” by themselves.
 
@@ -115,16 +123,15 @@ Use Tailwind as an *overlay* on top of the existing Source/Theme CSS:
 ### “Pure Tailwind mode” (danger)
 If you want Tailwind applied across *all* pages/templates (i.e. full migration), you can remove the `{{#is ...}}` guard in `default.hbs` and always load `tailwind.css`.
 
-This is **dangerous / higher risk** because Tailwind utilities can override existing theme class styles on pages you didn’t intend.
-It should only be done when you’re ready to gradually migrate UI consistently.
+This is **dangerous / higher risk** because Tailwind utilities can override existing theme class styles on pages you didn’t intend. Do not change the gate as part of an ordinary styling overlay; get explicit approval and verify every affected template first.
 
 ### Current state and history
 
 Check the source files and run relevant tests to determine current implementation status. `docs/OPERATIONAL.md` is a brief reference, not a work log or source of truth. Use `git log` for changes recorded in version control; the retired `docs/JOURNAL.md` is kept only for old links.
 
-- Tailwind build integrated into `gulp build` (compiled output: `assets/built/tailwind.css`)
-- Selective loading enabled for `tag`, `post`, `home`, `page`, `author`, `index`
-- Experimented with non-typography utilities (hover/background styling)
+### Future theme options
+
+Expanding Ghost theme settings (such as `site_background_color` or `navigation_layout`) is a separate customization project after the Tailwind migration. These settings can flow through Handlebars, CSS, and JavaScript; trace their actual consumers before changing defaults or adding options in `package.json`.
 
 ### Create a release zip
 

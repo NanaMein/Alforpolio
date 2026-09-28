@@ -1,14 +1,8 @@
-# Docs system — how this works
+# Project documentation
 
-The assistant writes and maintains every file here. The user reads, directs, and gives verdicts. Nothing here is hand-edited by the user.
+These files help people navigate the theme; they do not outrank the human's current direction or prove what the code currently does. Check source files and fresh tests for current implementation and completion status.
 
-## Flow
-
-```
-conversation → final verdict / executed task → assistant records it here
-```
-
-After each settled discussion, the assistant updates the file(s) below in the same session — not later, not from memory.
+Documentation is not updated after every conversation or task. Update a document only when the change is requested or is needed to keep that document's stated purpose accurate.
 
 ## Files
 
@@ -19,11 +13,11 @@ After each settled discussion, the assistant updates the file(s) below in the sa
 | [OPERATIONAL.md](OPERATIONAL.md) | Small set of durable, verifiable context notes and optional weekly milestones | Human-approved, concise, and descriptive; no per-task logs |
 | [JOURNAL.md](JOURNAL.md) | Retired compatibility pointer for old links | Historical entries removed; not a source of truth |
 
-Rule: **status lives only in PLAN.md**. INVENTORY is the map (no status), JOURNAL is history (no status). That prevents three files drifting out of sync.
+Precedence: current human instruction → current code and test results for implementation facts → documents as references → agent memory. On conflict, follow the human and flag the stale reference.
 
-## Status vocabulary (PLAN.md only)
+## Checklist vocabulary (PLAN.md only)
 
-`pending` · `in-progress` · `done` · `blocked` · `deferred`
+`pending` · `in-progress` · `done` · `blocked` · `deferred`. These labels help organize work; they are not proof that a change exists or has passed verification.
 
 ## Count notation (INVENTORY.md)
 

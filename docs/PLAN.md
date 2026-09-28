@@ -2,53 +2,35 @@
 
 This is an advisory roadmap and checklist, not evidence of current code state or a standing instruction to perform work. Current human direction wins. Verify each item's implementation in source and tests. Template relationships → [INVENTORY.md](INVENTORY.md) · concise project context → [OPERATIONAL.md](OPERATIONAL.md).
 
-## Ground rules (from verdicts — JRN-0002…0005)
+## Internal migration decision model
 
-1. **Extend, don't modify.** Tailwind utilities go *alongside* existing `gh-*`/`is-*` classes. Hooks and Ghost-held attrs (`data-portal`, `data-members-*`, `kg-*`, `ghost_head/foot`) stay untouched.
-2. **Never delete in the same step.** `screen.css` rules and old classes are pruned only in a later, separate pass after verification.
-3. **One file → one commit.** Rollback = `git revert`.
-4. **Gate rule** (check before touching a multi-page file):
-   - home/post/tag/page-only markup → gate unchanged
-   - `post-list` / `post-card` → gate impact should be checked in `docs/INVENTORY.md` (your current gate includes `index` + `author`, so this is often `none`)
-   - anything reachable from `default.hbs` (nav, footer, fonts, lightbox, email-sub, search-toggle) → gate impact should be checked in `docs/INVENTORY.md`
-5. **Order is flexible.** Pick any file; the only check is "which pages render this?" → gate impact (INVENTORY column).
+Use the stages internally to choose safe work; routine user updates should explain relevant impact and decisions without narrating stage numbers.
 
----
-## Migration phases (Tailwind overlay → semantic custom CSS → legacy cutover)
+### Phase 1 — Local Tailwind overlay
 
-This migration follows a 3-phase policy so we can iterate safely on a production-safe VPS.
+For a contained styling request, first check the real rendering scope and the Tailwind gate. Add raw Tailwind utilities to the relevant `.hbs` markup, matching existing visual values and states. Keep existing `gh-*` classes, Ghost helpers, and JavaScript hooks. Do not redesign or modify existing script behavior as an incidental styling change.
 
-### Phase 1 — Tailwind overlay (behavior hook stays)
-- Add/extend Tailwind utilities **without breaking existing behavior**.
-- Keep legacy `gh-*` / `is-*` markup and legacy CSS behavior in place.
-- No legacy deletion in this phase.
+### Phase 2 — Impact analysis and proposal
 
-### Phase 2 — Semantic custom CSS (permission-gated)
-- Introduce your **custom semantic selectors** via Tailwind authoring using `@apply`.
-- Semantic selectors must use a unique prefix `ap-` (never `gh-*`) so we can fully phase out legacy selectors later without accidental coupling.
-- Mirror the relevant part of `screen.css` by creating a new class that represents that styling contract.
-- **Legacy CSS stays present** (so rollback is easy). It may be annotated with an identifier comment so we can find it later.
-  - NOTE: Prefer “annotate + override” over “comment-out/disable” to avoid accidental behavior regressions.
-- Phase 2 starts only after you explicitly approve.
+If an existing selector, component, JavaScript behavior, or Ghost setting may affect more than the requested markup, inspect its actual consumers before changing it. Present the affected files/behaviors, explain the local-versus-shared choices, describe rollback and verification, and ask the human what scope they want. This stage is planning and approval, not permission to implement the broad change.
 
-### Phase 3 — Cut over responsibility (behavior moved out of legacy)
-- After Phase 2 is verified, we remove/replace what’s now redundant.
-- Legacy cutover work happens as part of later pruning/cleanup (Wave 5), not during Phase 1.
+For an approved reusable Tailwind component, use `ap-*` for CSS/component classes and author Tailwind rules in `assets/css/tailwind-input.css`. `ap-*` is not the JavaScript version namespace. Keep old CSS declarations and all `gh-*` classes; do not rename or remove them as part of migration.
 
-> Phase 3 success condition: the CTA/layout/typography behavior is now driven by `ap-*` (and any necessary JS), so the legacy `gh-*` styling selectors are no longer required for correct rendering.
+### Phase 3 — Approved execution
 
-## Verify + deploy loop (per file)
+Implement only the plan the human approved. Existing JavaScript must be extended, not rewritten: new functions use a `V1` suffix and new behavior hooks use `data-js-<feature>-v1`. Ensure old and new handlers do not both run on the same element. Preserve the old implementation for rollback and verify actual rendering/behavior.
 
-```bash
-bun run tailwind:build   # or bun run dev (watch mode)
-bun run test:ci          # gscan --fatal + zip (pretest:ci)
-git commit -m "tailwind(migrate): <file>"
-# deploy dist/alforpolio.zip → Ghost Admin → Design
-```
+## Legacy CSS cleanup threshold
 
-**VPS membership check before moving on:** logged out / free member / paid member (incognito + test account): nav+footer `data-portal` buttons render, signup form submits, no layout break.
+Only consider pruning legacy CSS when the owner judges that roughly **80–95% of the intended styling surface** has a Tailwind counterpart. This is a human review trigger, not automatic permission or a mathematical completion claim. The owner must explicitly approve cleanup. Then remove legacy CSS gradually in small, isolated slices, verifying each slice before moving on. Keep existing `gh-*` markup classes and rollback options available throughout.
 
-Restore point: `git tag pre-tailwind` (create before Wave 1 starts).
+## Separate future work: configurable theme options
+
+Expanding Ghost settings such as `site_background_color` and `navigation_layout` is outside the current Tailwind migration. Before changing `package.json` defaults or adding options, trace each setting through Handlebars, CSS, and JavaScript, then present the complete impact for approval.
+
+## Verification
+
+For Tailwind changes, run `bun run tailwind:build`; for theme markup or styling changes, run `bun run test:ci` (which also builds/zips and runs fatal gscan checks). Repository checks do not establish that production Ghost membership rendering works. When relevant, test logged-out, free-member, and paid-member states plus signup in Ghost before deployment.
 
 ---
 
@@ -56,8 +38,8 @@ Restore point: `git tag pre-tailwind` (create before Wave 1 starts).
 
 | # | Task | Status | Notes |
 |---|------|--------|-------|
-| 0.1 | Docs system (`docs/`) | **done** | JRN-0006 |
-| 0.2 | Update README (gate facts, docs links) | **done** | JRN-0006 |
+| 0.1 | Docs system (`docs/`) | **done** | Current files are the evidence; this table is a planning aid. |
+| 0.2 | Update README (gate facts, docs links) | **done** | Verify current README if this state matters. |
 | 0.3 | `git tag pre-tailwind` | pending | user runs it |
 | 0.4 | Gate includes `index` + `author` in `default.hbs` | **done** | gate expanded — see docs/INVENTORY.md |
 
@@ -65,8 +47,8 @@ Restore point: `git tag pre-tailwind` (create before Wave 1 starts).
 
 | File | Gate impact | Status |
 |------|-------------|--------|
- | `partials/components/cta.hbs` | none | **done** |
- | `partials/feature-image.hbs` | none | pending |
+| `partials/components/cta.hbs` | none | **in-progress** |
+| `partials/feature-image.hbs` | none | pending |
 
 ## Wave 2 — Feature slices (optional order, per rule 5)
 
@@ -99,14 +81,13 @@ Restore point: `git tag pre-tailwind` (create before Wave 1 starts).
 
 | Item | Status |
 |------|--------|
-| Remove rules for verified Tailwind files (separate commits) | pending |
-| Shrink gate docs / README to final state | pending |
+| After the coverage threshold and explicit approval, prune verified legacy CSS in small, tested slices | pending |
 
 ---
 
-## File checklist (all 42 — flip to `done` as migrated)
+## File checklist (42 templates and partials; verify before changing status)
 
-> Checklist note: `done` currently means **Phase 1 overlay** is complete for that file. Phase 2/3 will extend/replace this later once you approve Phase 2.
+> Checklist states are planning hints, not proof. Inspect the current markup/styles and obtain current approval before a consequential cutover; do not infer approval from this plan.
 
 - [ ] default.hbs *(only when gate flips — rule 4)*
 - [ ] home.hbs
@@ -121,7 +102,7 @@ Restore point: `git tag pre-tailwind` (create before Wave 1 starts).
 - [ ] components/header-content.hbs
 - [ ] components/post-list.hbs
 - [ ] components/featured.hbs
- - [x] components/cta.hbs
+  - [ ] components/cta.hbs *(owner says work is still in progress; current markup uses `ap-cta*`, but do not treat that as a completed migration—verify the intended markup, styles, and behavior with the owner)*
 - [ ] post-card.hbs
 - [ ] email-subscription.hbs
 - [ ] feature-image.hbs
