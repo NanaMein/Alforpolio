@@ -10,6 +10,7 @@
 */
 
 @tailwind utilities;
+@tailwind components;
 
 /* ------------------------------------------------------------
    Semantic selector namespace (Phase 2/3)
@@ -23,6 +24,50 @@
 */
 
 /* 9. CTA ------------------------------------------------------ */
+
+@layer components {
+    /* ap-outer / ap-inner: Tailwind counterparts for screen.css/.gh-outer + .gh-inner; legacy hooks remain in cta.hbs. */
+    .ap-outer {
+        @apply px-[max(4vmin,20px)];
+    }
+
+    .ap-outer .ap-outer {
+        @apply px-0;
+    }
+
+    .ap-inner {
+        @apply mx-auto w-full max-w-[var(--container-width)];
+    }
+
+    /* ap-cta: semantic mirror of screen.css/.gh-cta + display toggle */
+    .ap-cta {
+        @apply hidden mt-[max(4vw,40px)];
+    }
+
+    /* Mirrors: .gh-header:is(.is-highlight, .is-magazine) + .gh-cta */
+    .gh-header:is(.is-highlight, .is-magazine) + .ap-cta {
+        @apply block;
+    }
+
+    /* ap-cta-inner: semantic mirror of screen.css/.gh-cta-inner */
+    .ap-cta-inner {
+        @apply relative overflow-hidden flex flex-col items-center gap-[36px] text-center;
+        @apply bg-[var(--color-lighter-gray)]
+            p-[clamp(48px,3.64vw+33.45px,80px)_clamp(40px,2.73vw+29.09px,64px)];
+    }
+
+    .ap-cta-content {
+        @apply max-w-[640px];
+    }
+
+    .ap-cta-title {
+        @apply text-[clamp(2.8rem,1.36vw+2.25rem,4rem)] font-bold leading-[1.1] tracking-[-0.021em];
+    }
+
+    .ap-cta-description {
+        @apply mt-[12px] text-[1.8rem] leading-[1.4] tracking-[-0.015em];
+    }
+}
 
 /* 15. Typography ------------------------------------------- */
 
