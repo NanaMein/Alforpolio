@@ -1426,6 +1426,7 @@ Search                         LOGO                    Login Subscribe
 /* 9. CTA
 /* ---------------------------------------------------------- */
 
+/* LEGACY(P2): gh-cta → semantic replacement target = ap-cta (defined in assets/css/tailwind-input.css) */
 .gh-cta {
     display: none;
     margin-top: max(4vw, 40px);
@@ -1435,6 +1436,7 @@ Search                         LOGO                    Login Subscribe
     display: block;
 }
 
+/* LEGACY(P2): gh-cta-inner → ap-cta-inner */
 .gh-cta-inner {
     position: relative;
     overflow: hidden;
@@ -1447,10 +1449,12 @@ Search                         LOGO                    Login Subscribe
     background-color: var(--color-lighter-gray);
 }
 
+/* LEGACY(P2): gh-cta-content → ap-cta-content */
 .gh-cta-content {
     max-width: 640px;
 }
 
+/* LEGACY(P2): gh-cta-title → ap-cta-title */
 .gh-cta-title {
     font-size: clamp(2.8rem,1.36vw + 2.25rem,4rem);
     font-weight: 700;
@@ -1458,6 +1462,7 @@ Search                         LOGO                    Login Subscribe
     letter-spacing: -0.021em;
 }
 
+/* LEGACY(P2): gh-cta-description → ap-cta-description */
 .gh-cta-description {
     margin-top: 12px;
     font-size: 1.8rem;
@@ -1594,7 +1599,8 @@ Search                         LOGO                    Login Subscribe
     column-gap: var(--grid-gap);
 }
 
-:is(.gh-featured, .gh-cta) + .gh-container {
+/* Support both legacy and Tailwind CTA classes in the feed-spacing contract. */
+:is(.gh-featured, .gh-cta, .ap-cta) + .gh-container {
     margin-top: max(4vw, 40px);
 }
 
@@ -2742,7 +2748,8 @@ body[class^="gh-font-heading"]:not(.gh-font-heading-fira-sans):not(.gh-font-head
     border-radius: 0;
 }
 
-.has-serif-title:not([class*=" gh-font-heading"]):not([class^="gh-font-heading"]) .gh-cta-title {
+/* Preserve serif title sizing for both legacy and Tailwind CTA classes. */
+.has-serif-title:not([class*=" gh-font-heading"]):not([class^="gh-font-heading"]) :is(.gh-cta-title, .ap-cta-title) {
     font-size: 4.8rem;
 }
 
