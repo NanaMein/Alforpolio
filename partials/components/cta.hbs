@@ -4,13 +4,13 @@
         {{#match @custom.header_style "!=" "Search"}}
         {{#match @custom.header_style "!=" "Off"}}
         {{#match posts.length ">=" 7}}
-            <section class="gh-cta gh-outer">
-                <div class="gh-cta-inner gh-inner relative overflow-hidden flex flex-col items-center gap-[36px] text-center">
-                    <div class="gh-cta-content max-w-[640px]">
-                        <h2 class="gh-cta-title is-title font-bold">
+            <section class="gh-cta gh-outer ap-outer ap-cta">
+                <div class="gh-cta-inner gh-inner ap-inner ap-cta-inner">
+                    <div class="gh-cta-content ap-cta-content">
+                        <h2 class="gh-cta-title is-title ap-cta-title">
                             {{#if @custom.signup_heading}}{{@custom.signup_heading}}{{else}}{{@site.title}}{{/if}}
                         </h2>
-                        <p class="gh-cta-description is-body mt-[12px] leading-[1.4]">
+                        <p class="gh-cta-description is-body ap-cta-description">
                             {{#if @custom.signup_subheading}}{{@custom.signup_subheading}}{{else}}{{@site.description}}{{/if}}
                         </p>
                     </div>
