@@ -102,6 +102,7 @@ function zipper(done) {
             '!pnpm-workspace.yaml',
             '!AGENTS.md',
             '!CLAUDE.md',
+            '!.opencode', '!.opencode/**',
             '!gulpfile.js',
             '!scripts', '!scripts/**',
             '!docs',
