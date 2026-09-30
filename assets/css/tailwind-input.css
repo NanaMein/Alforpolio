@@ -67,6 +67,113 @@
     .ap-cta-description {
         @apply mt-[12px] text-[1.8rem] leading-[1.4] tracking-[-0.015em];
     }
+
+    /* Shared email signup form: mirror screen.css/.gh-form styling without replacing Ghost hooks. */
+    .ap-form {
+        @apply relative flex h-[56px] w-full max-w-[560px] items-center rounded-[40px];
+        @apply bg-[var(--color-lighter-gray)] text-[1.7rem] font-[450] tracking-[-0.008em];
+        @apply transition-[background-color] duration-[200ms] ease-[ease];
+    }
+
+    .ap-form.success {
+        @apply pointer-events-none;
+    }
+
+    .ap-form.error {
+        @apply shadow-[0_0_0_1px_red];
+    }
+
+    .ap-form:hover {
+        @apply bg-[rgb(0_0_0_/_0.065)];
+    }
+
+    .has-light-text .ap-form:hover,
+    .gh-footer.has-accent-color .ap-form:hover {
+        @apply bg-[rgb(255_255_255_/_0.15)];
+    }
+
+    .ap-form-input {
+        @apply absolute inset-0 h-full w-full rounded-[40px] border-0 bg-transparent;
+        @apply px-[26px] text-[inherit] tracking-[inherit] leading-[1.1] outline-none;
+        @apply transition-[0.3s_ease-in-out];
+    }
+
+    .ap-form-input::placeholder,
+    button.ap-form-input {
+        @apply text-[rgb(0_0_0_/_0.3)];
+    }
+
+    .ap-form.success .ap-form-input {
+        @apply opacity-50;
+    }
+
+    .has-light-text .ap-form-input,
+    .gh-footer.has-accent-color .ap-form-input {
+        @apply text-white;
+    }
+
+    .has-light-text .ap-form-input::placeholder,
+    .has-light-text button.ap-form-input,
+    .gh-footer.has-accent-color .ap-form-input::placeholder {
+        @apply text-[rgb(255_255_255_/_0.55)];
+    }
+
+    .gh-header.is-classic.has-image .ap-form-input {
+        @apply text-[#15171a];
+    }
+
+    .gh-header.is-classic.has-image .ap-form-input::placeholder,
+    .gh-header.is-classic.has-image button.ap-form-input,
+    .gh-header.is-classic.has-image .ap-form > svg {
+        @apply text-[rgb(0_0_0_/_0.5)];
+    }
+
+    button.ap-form-input {
+        @apply cursor-pointer pl-[56px] text-left text-[var(--color-secondary-text)];
+    }
+
+    .ap-form .ap-form-button {
+        @apply absolute right-[6px] h-[44px] min-w-[132px] px-[24px] text-[inherit];
+    }
+
+    .ap-form-error {
+        @apply absolute top-full mt-[10px] w-full text-[1.4rem] leading-[1.4];
+    }
+
+    .ap-form .ap-form-button svg {
+        @apply absolute hidden;
+        margin-top: 1px;
+    }
+
+    .ap-form .ap-form-button > span:last-child {
+        @apply hidden;
+    }
+
+    .ap-form:is(.loading, .success) .ap-form-button > span:first-child {
+        @apply invisible;
+    }
+
+    .ap-form.loading .ap-form-button svg:first-of-type {
+        @apply block;
+    }
+
+    .ap-form.success .ap-form-button > span:first-child {
+        @apply hidden;
+    }
+
+    .ap-form.success .ap-form-button > span:last-child {
+        @apply inline;
+    }
+
+    @media (max-width: 576px) {
+        .ap-form {
+            @apply text-[1.6rem];
+        }
+
+        .ap-form .ap-form-button {
+            @apply min-w-[104px] px-[12px];
+        }
+    }
 }
 
 /* 15. Typography ------------------------------------------- */
